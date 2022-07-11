@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
+#include <vector>
 
 const uint32_t WIN_WIDTH = 800;
 const uint32_t WIN_HEIGHT = 600;
@@ -44,6 +45,8 @@ private:
 
     void cleanup()
     {
+        vkDestroyInstance(m_Instance, nullptr);
+
         glfwDestroyWindow(m_Window);
 
         glfwTerminate();
@@ -82,6 +85,19 @@ private:
             throw std::runtime_error("Failed to Create Vulkan Instance");
         }
         std::cout << "Vulkan Instance Created Successfully" << std::endl;
+
+        // Check extensions
+        uint32_t extensionCount = 0;
+        vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+        std::cout << "Extensions Available: " << extensionCount << std::endl;
+
+        std::vector<VkExtensionProperties> extensions(extensionCount);
+        vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+        std::cout << "Available extensions: " << std::endl;
+        for (const auto &extension : extensions)
+        {
+            std::cout << '\t' << extension.extensionName << std::endl;
+        }
     }
 
 private:
