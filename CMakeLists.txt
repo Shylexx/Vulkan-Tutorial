@@ -3,7 +3,15 @@ project(VulkanTutorial VERSION 0.0.1 LANGUAGES CXX)
 
 add_subdirectory(lib/glm)
 add_subdirectory(lib/glfw)
-find_package(Vulkan REQUIRED)
+find_package(Vulkan)
+
+message("Vulkan Found? " ${VULKAN_FOUND})
+
+if(NOT Vulkan_FOUND)
+    message(FATAL_ERROR "Could not find Vulkan library!")
+else()
+    message(STATUS "Using vulkan lib at: ${Vulkan_LIBRARIES}")
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -28,14 +36,13 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_CURRENT_LIST_DIR}/src
     glfw
     glm
-    ${VULKAN_INCLUDE_DIRS}
+    ${Vulkan_INCLUDE_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME}
-    PUBLIC
-    glfw
-    glm
-    ${VULKAN_LIB_LIST}
+    PUBLIC ${Vulkan_LIBRARIES}
+    PUBLIC glfw
+    PUBLIC glm
 )
 
 target_compile_definitions(${PROJECT_NAME}
