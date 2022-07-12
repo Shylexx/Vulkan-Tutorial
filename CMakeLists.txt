@@ -3,9 +3,7 @@ project(VulkanTutorial VERSION 0.0.1 LANGUAGES CXX)
 
 add_subdirectory(lib/glm)
 add_subdirectory(lib/glfw)
-find_package(Vulkan)
-
-message("Vulkan Found? " ${VULKAN_FOUND})
+find_package(Vulkan REQUIRED)
 
 if(NOT Vulkan_FOUND)
     message(FATAL_ERROR "Could not find Vulkan library!")
